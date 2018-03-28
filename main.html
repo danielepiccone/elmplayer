@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* custom styles? Sure! */
+  </style>
+</head>
+<body>
+  <!-- Relative to index.html, main.elm lives in `src/Main.elm`. -->
+  <!-- Prefixing that with `/_compile/` gives us magic! -->
+  <script src="_compile/Main.elm"></script>
+  <script src="assets/ports.js"></script>
+  <link rel="stylesheet" href="assets/app.css"></link>
+
+  <div id='youtube'></div>
+  <script>
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  </script>
+  <script>
+    window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady () {
+      window.player = new window.YT.Player('youtube', {
+        height: '309',
+        width: '100%',
+        events: {
+          onReady: () => {
+
+            // Boot elm app
+            var app = Elm.Main.fullscreen()
+            window.__ports__.integrate(app)
+
+          }
+        }
+      })
+    }
+  </script>
+</body>
+</html>
